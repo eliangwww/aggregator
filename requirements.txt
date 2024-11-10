@@ -5,3 +5,4 @@ pycryptodomex
 fofa-hack
 python-telegram-bot
 pytz
+asyncio
