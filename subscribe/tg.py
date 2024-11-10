@@ -33,8 +33,9 @@ def get_node_count(yaml_file):
         return len(data['proxies'])
 
 # 获取节点地区
-node_regions = get_node_regions('path_to_clash.yaml')
-node_count = get_node_count('path_to_clash.yaml')
+yaml_path = '/home/runner/work/aggregator/aggregator/data/clash.yaml'  # 更新文件路径
+node_regions = get_node_regions(yaml_path)
+node_count = get_node_count(yaml_path)
 
 # 创建消息内容
 message = f"""
@@ -45,4 +46,3 @@ message = f"""
 
 # 发送通知
 bot.send_message(chat_id=CHAT_ID, text=message)
-
