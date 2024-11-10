@@ -1,6 +1,6 @@
 name: Refresh
 on:
-  # performed every two hours
+  # 每两小时执行一次
   schedule:
     - cron: "0 */2 * * *"
   workflow_dispatch:
@@ -10,21 +10,24 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  # time zone
+  # 设置时区为北京时间
   TZ: Asia/Shanghai
 
   # github access token
   GIST_PAT: ${{ secrets.GIST_PAT }}
 
-  # github username and gist id, separated by '/'
+  # Gist 链接，包含用户名和 Gist ID
   GIST_LINK: ${{ secrets.GIST_LINK }}
 
-  # the url to the list of airports that you maintain yourself
-  # each line include domain, coupon and invitation code, the domain must be included, and the latter two items are optional
+  # 自定义链接
   CUSTOMIZE_LINK: ${{ secrets.CUSTOMIZE_LINK }}
 
-  # include special protocols, such as vless hysteria2 and hysteria
+  # 启用特殊协议
   ENABLE_SPECIAL_PROTOCOLS: ${{ vars.ENABLE_SPECIAL_PROTOCOLS }}
+
+  # Telegram bot token and chat id
+  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+  TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
 
 jobs:
   process:
@@ -44,7 +47,9 @@ jobs:
           cache: "pip"
 
       - name: Install
-        run: pip3 install -r requirements.txt
+        run: |
+          pip3 install -r requirements.txt
+          pip3 install python-telegram-bot pyyaml
 
       - name: Check
         run: |
@@ -69,3 +74,47 @@ jobs:
 
       - name: Timestamp
         run: date
+
+      - name: Notify
+        env:
+          GIST_FILE_URL: "https://gist.githubusercontent.com/${{ env.GIST_LINK }}/raw/clash.yaml"
+        run: |
+          python3 <<EOF
+import os
+import yaml
+import requests
+from datetime import datetime
+from telegram import Bot
+import pytz
+
+# 设置 Telegram Bot
+TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
+bot = Bot(token=TOKEN)
+
+# 获取北京时间
+beijing = pytz.timezone('Asia/Shanghai')
+update_time = datetime.now(beijing).strftime('%Y-%m-%d %H:%M:%S')
+
+# 下载并解析 Gist 文件
+url = os.getenv('GIST_FILE_URL')
+response = requests.get(url)
+data = yaml.safe_load(response.text)
+
+# 解析节点数量和地区
+node_count = len(data['proxies'])
+regions = set()
+for proxy in data['proxies']:
+    if 'name' in proxy and proxy['name'][0] in ["🇺🇸", "🇬🇧", "🇨🇳", "🇯🇵"]:  # 你可以根据需要添加其他旗帜
+        regions.add(proxy['name'][0])
+
+# 生成消息内容
+message = f"""
+更新时间: {update_time} (北京时间)
+节点数量: {node_count}
+节点地区: {', '.join(regions)}
+"""
+
+# 发送 Telegram 消息
+bot.send_message(chat_id=CHAT_ID, text=message)
+EOF
