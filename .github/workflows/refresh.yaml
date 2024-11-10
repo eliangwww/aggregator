@@ -66,7 +66,9 @@ jobs:
 
       - name: Refresh
         run: python -u subscribe/collect.py -t clash mixed --all --refresh --overwrite --skip
-             python subscribe/tg.py
+     
+      - name: Telegram Notification
+        run: python subscribe/tg.py
 
       - name: Timestamp
         run: date
