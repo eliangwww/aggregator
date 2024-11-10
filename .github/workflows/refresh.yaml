@@ -65,7 +65,7 @@ jobs:
           fi
 
       - name: Refresh
-        run: python -u subscribe/collect.py -t v2ray --all --refresh --overwrite --skip
+        run: python -u subscribe/collect.py -t clash mixed --all --refresh --overwrite --skip
 
       - name: Timestamp
         run: date
