@@ -5,8 +5,8 @@ import pytz
 from telegram import Bot
 
 # 设置 Telegram Bot Token 和 Chat ID
-TOKEN = ''
-CHAT_ID = ''
+TOKEN = '7105513269:AAGxdsjP9P6cp3wPdZeeLqmSA7wiBxn5ll8'
+CHAT_ID = '-1002242550802'
 bot = Bot(token=TOKEN)
 
 # 获取北京时间
