@@ -54,7 +54,7 @@ node_count = get_node_count(yaml_url)
 node_regions = classify_nodes_by_region(yaml_url)
 
 # 构建消息内容
-message = f"#节点更新\npool 2h更新任务已完成\n节点链接：https://pool.fucklin.us.kg\n更新时间: {update_time} (北京时间)\n节点数量: {node_count}\n\n节点地区分类：\n"
+message = f"#节点更新\n\npool 2h更新任务已完成\n\n节点链接：https://pool.fucklin.us.kg\n\n更新时间: {update_time} (北京时间)\n\n节点数量: {node_count}\n\n节点地区：\n"
 for region, names in node_regions.items():
     message += f"\n{region} ({len(names)}个节点):\n" + "\n".join(names) + "\n"
 
