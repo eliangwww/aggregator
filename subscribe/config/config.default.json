@@ -2,7 +2,7 @@
     "domains": [
         {
             "name": "",
-            "sub": [https://gist.github.com/eliangwww/059af67e3c197b8094441be1a16eec3f/raw/subscribes.txt],
+            "sub": [],
             "domain": "",
             "enable": false,
             "rename": "",
@@ -22,7 +22,7 @@
                         "email": "",
                         "passwd": "",
                         "ticket": {
-                            "enable": true,
+                            "enable": false,
                             "autoreset": false,
                             "subject": "",
                             "message": "",
@@ -35,7 +35,7 @@
                 "method": 1,
                 "coupon_code": "",
                 "chatgpt": {
-                    "enable": true,
+                    "enable": false,
                     "regex": "",
                     "operate": "IN"
                 }
