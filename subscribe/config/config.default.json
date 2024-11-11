@@ -2,9 +2,9 @@
     "domains": [
         {
             "name": "",
-            "sub": [],
+            "sub": [https://gist.github.com/eliangwww/059af67e3c197b8094441be1a16eec3f/raw/subscribes.txt],
             "domain": "",
-            "enable": true,
+            "enable": false,
             "rename": "",
             "include": "",
             "exclude": "",
